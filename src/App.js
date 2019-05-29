@@ -4,8 +4,9 @@ import Header from './Components/Layouts/Header';
 import Todos from './Components/Todos';
 import AddTodo from './Components/AddTodo';
 import About from './Components/Layouts/About';
+import axios from 'axios';
 import './App.css';
-import uuid from 'uuid';
+import uuid from 'uuid';   // uuid: a package to generate random id's instead of hardcoding them.
 
 class App extends Component {
 
@@ -14,23 +15,23 @@ class App extends Component {
   
     this.state = {
        todos: [
-         {
-           id: uuid.v4(),  // uuid: a package to generate random id's instead of hardcoding them.
-            title: "Learn React",
-           completed: false
-         },
-         {
-          id: uuid.v4(),
-          title: "Make a Todo App",
-          completed: true
-        },
-        {
-          id: uuid.v4(),
-          title: "Get a Developer Job",
-          completed: false
-        }
+        //  {
+        //    id: uuid.v4(),  // uuid: a package to generate random id's instead of hardcoding them.
+        //     title: "Learn React",
+        //    completed: false
+        //  }
        ]
     }
+  }
+
+  // Life cycle method: Like ngOnint in angular
+  componentDidMount() {
+    // Get Request
+    axios.get("https://jsonplaceholder.typicode.com/todos?_limit=10")   // ?_limit=10: to limit the todos coming from the api to 10
+      .then(
+        res => this.setState({todos: res.data})
+      ) 
+
   }
 
   // toggle if todo is completed
@@ -47,21 +48,25 @@ class App extends Component {
 
   // Delete Todo Items
   deleteTodo = (id) => {
-    this.setState({
-      todos: [...this.state.todos.filter(todo => todo.id !== id)]
-    })
+    axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+      .then(
+        res => this.setState({
+          todos: [...this.state.todos.filter(todo => todo.id !== id)]
+        })
+      )
   }
 
   // Add Todo Item
   addTodo = (title) => {
-    const newTodo = {
-      id:uuid.v4(),
-      title, // title: title is how its supposed tobe but in ES6 if the key and value are the same yoou can just set it to: title
-      completed: false
-    }
-    this.setState({
-      todos: [...this.state.todos, newTodo]
-    })
+    axios.post("https://jsonplaceholder.typicode.com/todos", {title, completed:false}) // title: title is how its supposed tobe but in ES6 if the key and value are the same yoou can just set it to: title
+      .then(
+        res => this.setState({
+          todos: [...this.state.todos, res.data]
+        })
+      ) 
+      .catch(
+        err => console.log(err)
+      )
   }
     
 
