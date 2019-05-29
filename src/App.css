@@ -14,9 +14,22 @@ a {
   color: #fff;
 }
 
+/* .container {
+  padding:  0 1em;
+} */
 
+.btn {
+  border: none;
+  display: inline-block;
+  color: #fff;
+  padding: 7px 20px;
+  cursor: pointer;
+  background: 	#8B008B;
+}
 
-
+.btn:hover {
+  background: #ff4081;
+}
 
 
 

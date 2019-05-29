@@ -1,6 +1,9 @@
 import React,  { Component } from 'react';
+import Header from './Components/Layouts/Header';
 import Todos from './Components/Todos';
 import './App.css';
+import AddTodo from './Components/AddTodo';
+import uuid from 'uuid';
 
 class App extends Component {
 
@@ -10,17 +13,17 @@ class App extends Component {
     this.state = {
        todos: [
          {
-           id: 1,
-           title: "Learn React",
+           id: uuid.v4(),  // uuid: a package to generate random id's instead of hardcoding them.
+            title: "Learn React",
            completed: false
          },
          {
-          id: 2,
+          id: uuid.v4(),
           title: "Make a Todo App",
           completed: true
         },
         {
-          id: 3,
+          id: uuid.v4(),
           title: "Get a Developer Job",
           completed: false
         }
@@ -46,17 +49,32 @@ class App extends Component {
       todos: [...this.state.todos.filter(todo => todo.id !== id)]
     })
   }
+
+  // Add Todo Item
+  addTodo = (title) => {
+    const newTodo = {
+      id:uuid.v4(),
+      title, // title: title is how its supposed tobe but in ES6 if the key and value are the same yoou can just set it to: title
+      completed: false
+    }
+    this.setState({
+      todos: [...this.state.todos, newTodo]
+    })
+  }
     
 
   render() {
       return (
         <div className="App">
-          <Todos todo={this.state.todos} markComplete={this.markComplete} deleteTodo={this.deleteTodo} />
+          <div className="container">
+            <Header />
+            <AddTodo addTodo={this.addTodo} />
+            <Todos todo={this.state.todos} markComplete={this.markComplete} deleteTodo={this.deleteTodo} />
+          </div>
         </div>
       )
   }
 }
-
 
 
 
